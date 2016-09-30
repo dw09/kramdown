@@ -125,6 +125,8 @@ module Kramdown
         obj = Object.new
         obj.instance_variable_set(:@converter, converter)
         obj.instance_variable_set(:@body, body)
+        # By convention, assume that the first element is a markdown title and use it for HTML
+        obj.instance_variable_set(:@title, converter.root.children[0].children[0].value)
         erb.result(obj.instance_eval{binding})
       end
 

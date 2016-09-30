@@ -482,6 +482,9 @@ module Kramdown
     # The child elements of this element.
     attr_accessor :children
 
+    # For list items, the bullet
+    attr_accessor :bullet
+
 
     # Create a new Element object of type +type+. The optional parameters +value+, +attr+ and
     # +options+ can also be set in this constructor for convenience.

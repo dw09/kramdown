@@ -153,7 +153,19 @@ module Kramdown
       end
 
       def convert_li(el, indent)
-        output = ' '*indent << "<#{el.type}" << html_attributes(el.attr) << ">"
+        blt = ''
+        if el.bullet
+          x = tps_ = {
+            '✔' => 'chk',
+            '✘' => 'crs',
+            #'-' => 'crs',
+            #'*' => 'crs',
+          } [el.bullet]
+          if x
+            blt = " class=\"#{x}\""
+          end
+        end
+        output = ' '*indent << "<#{el.type}" << html_attributes(el.attr) << blt << ">"
         res = inner(el, indent)
         if el.children.empty? || (el.children.first.type == :p && el.children.first.options[:transparent])
           output << res << (res =~ /\n\Z/ ? ' '*indent : '')

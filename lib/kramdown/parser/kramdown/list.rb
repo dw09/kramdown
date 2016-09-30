@@ -45,7 +45,10 @@ module Kramdown
       end
 
 
-      LIST_START_UL = /^(#{OPT_SPACE}[+*-])([\t| ].*?\n)/
+      # Even though $2 does not appear anywhere here, it messes up the code if I introduce
+      # another group in the regex.  So maybe the regex result is used by the caller??
+      BULLET_CHARS = "[+*-✔✘]"
+      LIST_START_UL = /^(#{OPT_SPACE}#{BULLET_CHARS})([\t| ].*?\n)/
       LIST_START_OL = /^(#{OPT_SPACE}\d+\.)([\t| ].*?\n)/
       LIST_START = /#{LIST_START_UL}|#{LIST_START_OL}/
 
@@ -69,6 +72,12 @@ module Kramdown
             break
           elsif @src.scan(list_start_re)
             item = Element.new(:li, nil, nil, :location => start_line_number)
+
+            m = /^(#{BULLET_CHARS})/.match @src[0]
+            if m
+              item.bullet = m[1]
+            end
+
             item.value, indentation, content_re, lazy_re, indent_re = parse_first_list_line(@src[1].length, @src[2])
             list.children << item
 
@@ -77,7 +86,7 @@ module Kramdown
               ''
             end
 
-            list_start_re = (type == :ul ? /^( {0,#{[3, indentation - 1].min}}[+*-])([\t| ].*?\n)/ :
+            list_start_re = (type == :ul ? /^( {0,#{[3, indentation - 1].min}}#{BULLET_CHARS})([\t| ].*?\n)/ :
                              /^( {0,#{[3, indentation - 1].min}}\d+\.)([\t| ].*?\n)/)
             nested_list_found = (item.value =~ LIST_START)
             last_is_blank = false
