@@ -1,0 +1,60 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+<meta charset="utf-8">
+<title><%= @title %></title>
+<style>
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	padding-left: 1.0em;
+	text-indent: 0.0em;
+	margin-left: 0.0em;
+	margin-bottom: 1.0em;
+}
+ul ul {
+	padding-left: 0;
+}
+li {
+	padding: 0;
+	margin: 0;
+	padding-left: 1.4em;
+	margin-top: 0.4em;
+	margin-bottom: 0.0em;
+	text-indent: -0.7em;
+}
+/*
+•   2022  BULLET
+●   25cf  BLACK CIRCLE
+⚫  26ab  MEDIUM BLACK CIRCLE
+⬤   2b24  BLACK LARGE CIRCLE
+*/
+li::before {
+	content: "●";
+	display: inline-block;
+	width: 0.7em;
+	padding-left:   0.0em;
+	padding-right:  0.0em;
+	margin-right:   0.0em;
+}
+li.chk::before {
+	content: "✔";
+	color: #30aa20;
+}
+li.crs::before {
+	content: "✘";
+	color: #aa3020;
+}
+p {
+	display: inline;
+}
+pre {
+	text-indent: 0;
+}
+</style>
+</head>
+<body>
+<%= @body %>
+</body>
+</html>

@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.0.0')
+	puts "SORRY your RUBY_VERSION #{RUBY_VERSION} is too old"
+	exit 1
+end
+
+dn = "#{ENV['HOME']}/dev/kramdown/lib"
+if File.directory? dn
+	$LOAD_PATH.unshift dn
+end
+
+dn = "/home/scratch/kramdown/lib"
+if File.directory? dn
+	$LOAD_PATH.unshift dn
+end
+
+require 'kramdown'
+
+if ARGV.length < 1
+	puts 'ERROR give a markdown file as parameter'
+	exit 1
+end
+
+fn = ARGV[0]
+
+m = /(.+).(md|page)/.match fn
+
+outfn = "#{m[1]}.html"
+
+inp = File.read fn
+
+#p inp.encoding
+#inp = inp.force_encoding('iso-8859-1').encode('utf-8')
+
+doc = Kramdown::Document.new(inp, {input: 'GFM', template: "#{ENV['HOME']}/md-template.html"})
+#p doc.methods.sort
+
+File.open outfn, 'wb' do |f1|
+	f1.write doc.to_html
+end
